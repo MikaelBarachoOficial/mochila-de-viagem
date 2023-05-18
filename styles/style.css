@@ -1,5 +1,6 @@
 html {
     background: radial-gradient(farthest-corner at right top,#21A09D, #06182D);
+    height: 100%;
     font-family: 'Roboto', cursive;
 }
 
@@ -13,7 +14,7 @@ html {
 .principal {
     flex-grow: 1;
     flex-basis: auto;
-    min-width: 600px;
+    max-width: 37.5rem;
     padding: 4em 2em 2em;
     box-sizing: border-box;
     display: flex;
@@ -102,6 +103,10 @@ html {
 .lista {
     margin: 0;
     padding: 0;
+
+    display: flex;
+    flex-direction: column-reverse;
+    
 }
 
 .item {

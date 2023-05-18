@@ -6,4 +6,5 @@
 | ---------------- | ------ |
 | HTML  | Finalizado |
 | CSS   | Finalizado |
-| Javascript  | Em Desenvolvimento. |
+| Javascript  | Em Desenvolvimento |
+| localStorage | Em Desenvolvimento |
