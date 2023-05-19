@@ -1,48 +1,68 @@
-const formulario = document.getElementById('novoItem');
-const lista = document.querySelector('.lista')
+const formulario = document.getElementById('novoItem')
+const lista = document.getElementById('lista')
+const limparLista = document.getElementById('limparLista')
+const itensArmazenados = JSON.parse(localStorage.getItem('itensArmazenados'))
 var itens = []
 
-const itensSalvos = JSON.parse(localStorage.getItem('itensArmazenados'))
-
-if (itensSalvos != null) {
-    for (let i = 0; i < itensSalvos.length; i++){
-        lista.innerHTML += `<li class="item"><strong>${itensSalvos[i].quantidade}</strong>${itensSalvos[i].nome}</li>`
-        
-        const itemSalvo = {
-            'nome': itensSalvos[i].nome,
-            'quantidade': itensSalvos[i].quantidade
+if (itensArmazenados != null) {
+    for (let i = 0; i < itensArmazenados.length; i++) {
+        lista.innerHTML += `<li class="item"><strong>${itensArmazenados[i].quantidade}</strong>${itensArmazenados[i].nome}</li>`
+        const itemArmazenado = {
+            'nome': itensArmazenados[i].nome,
+            'quantidade': itensArmazenados[i].quantidade
         }
 
-        itens.push(itemSalvo)
+        itens.push(itemArmazenado)
     }
-    
 }
 
 formulario.addEventListener('submit', evento => {
-    evento.preventDefault();
-    
-    const nome = evento.target.elements['nome']
-    const quantidade = evento.target.elements['quantidade']
+    evento.preventDefault()
 
+    var nome = evento.target.elements['nome']
+    var quantidade = evento.target.elements['quantidade']
+    
     criaElemento (nome.value, quantidade.value)
+
     nome.value = ''
     quantidade.value = ''
-    document.getElementById('nome').focus();
-
-   
+    nome.focus()
 })
 
-function criaElemento (nome, quantidade) {
-
-    lista.innerHTML += `<li class="item"><strong>${quantidade}</strong>${nome}</li>`
+function criaElemento (nome , quantidade) {
     
-    const itemAtual = {
+    const item = document.createElement('li')
+    item.classList.add('item')
+
+    const numero = document.createElement('strong')
+    numero.innerHTML = quantidade
+    item.appendChild(numero)
+
+    item.innerHTML += nome
+    lista.appendChild(item)
+
+    //LOCAL STORAGE
+
+    const armazenaItens = {
         'nome': nome,
         'quantidade': quantidade
     }
-
-    itens.push(itemAtual)
-
-    localStorage.setItem('itensArmazenados', JSON.stringify(itens)) 
-    
+    itens.push(armazenaItens) 
+    localStorage.setItem('itensArmazenados', JSON.stringify(itens))
 }
+
+limparLista.addEventListener('click', evento => {
+    if (itens.length > 3) {
+
+        var confirma = window.confirm('Tem certeza de que deseja excluir todos os itens da lista?') 
+
+    }
+
+    if (itens.length <= 3 || confirma == true) {
+        
+        localStorage.clear()
+        lista.innerHTML = ''
+        itens = []
+
+    }
+})
