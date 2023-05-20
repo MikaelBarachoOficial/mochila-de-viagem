@@ -52,13 +52,15 @@ function criaElemento (nome , quantidade) {
 }
 
 limparLista.addEventListener('click', evento => {
-    if (itens.length > 3) {
+    let limiteDeConfirmacao = 3
+
+    if (itens.length > limiteDeConfirmacao) {
 
         var confirma = window.confirm('Tem certeza de que deseja excluir todos os itens da lista?') 
 
     }
 
-    if (itens.length <= 3 || confirma == true) {
+    if (itens.length <= limiteDeConfirmacao || confirma == true) {
         
         localStorage.clear()
         lista.innerHTML = ''
