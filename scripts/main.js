@@ -24,6 +24,15 @@ formulario.addEventListener('submit', evento => {
     
     criaElemento (nome.value, quantidade.value)
 
+    //LOCAL STORAGE
+    const armazenaItens = {
+        'nome': nome.value,
+        'quantidade': quantidade.value
+    }
+    itens.push(armazenaItens) 
+    localStorage.setItem('itensArmazenados', JSON.stringify(itens))
+
+    //Reiniciando área de formulário
     nome.value = ''
     quantidade.value = ''
     nome.focus()
@@ -41,14 +50,7 @@ function criaElemento (nome , quantidade) {
     item.innerHTML += nome
     lista.appendChild(item)
 
-    //LOCAL STORAGE
-
-    const armazenaItens = {
-        'nome': nome,
-        'quantidade': quantidade
-    }
-    itens.push(armazenaItens) 
-    localStorage.setItem('itensArmazenados', JSON.stringify(itens))
+    
 }
 
 limparLista.addEventListener('click', evento => {
