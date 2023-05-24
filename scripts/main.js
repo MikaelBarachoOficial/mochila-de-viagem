@@ -17,20 +17,23 @@ if (itensArmazenados != null) {
 }
 
 formulario.addEventListener('submit', evento => {
-    //evento.preventDefault()
+    evento.preventDefault()
 
     var nome = evento.target.elements['nome']
     var quantidade = evento.target.elements['quantidade']
     
      const itemAtual = {
         'nome': nome.value,
-        'quantidade': quantidade.value
+        'quantidade': quantidade.value,
+        'id': itens.length
     }
     
     const existe = itens.find(elemento => elemento.nome === nome.value)
     if (existe) {
         
-        existe.quantidade = parseInt(existe.quantidade) + parseInt(quantidade.value)
+        existe.quantidade = quantidade.value
+        atualizaElemento(existe.id, itemAtual)
+
 
     } else {
 
@@ -56,9 +59,15 @@ function criaElemento (item) {
     numero.innerHTML = item.quantidade
     novoItem.appendChild(numero)
 
+    numero.dataset.quantidade = itens.length
+
     novoItem.innerHTML += item.nome
     lista.appendChild(novoItem)
 
+}
+
+function atualizaElemento (identificacao, item) {
+    lista.querySelector(`[data-quantidade="${identificacao}"]`).innerHTML = item.quantidade
 }
 
 limparLista.addEventListener('click', evento => {
