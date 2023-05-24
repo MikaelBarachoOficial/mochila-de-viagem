@@ -17,19 +17,28 @@ if (itensArmazenados != null) {
 }
 
 formulario.addEventListener('submit', evento => {
-    evento.preventDefault()
+    //evento.preventDefault()
 
     var nome = evento.target.elements['nome']
     var quantidade = evento.target.elements['quantidade']
     
-    criaElemento (nome.value, quantidade.value)
-
-    //LOCAL STORAGE
-    const armazenaItens = {
+     const itemAtual = {
         'nome': nome.value,
         'quantidade': quantidade.value
     }
-    itens.push(armazenaItens) 
+    
+    const existe = itens.find(elemento => elemento.nome === nome.value)
+    if (existe) {
+        
+        existe.quantidade = parseInt(existe.quantidade) + parseInt(quantidade.value)
+
+    } else {
+
+        criaElemento (itemAtual)
+        itens.push (itemAtual)
+
+    }
+
     localStorage.setItem('itensArmazenados', JSON.stringify(itens))
 
     //Reiniciando área de formulário
@@ -38,19 +47,18 @@ formulario.addEventListener('submit', evento => {
     nome.focus()
 })
 
-function criaElemento (nome , quantidade) {
+function criaElemento (item) {
     
-    const item = document.createElement('li')
-    item.classList.add('item')
+    const novoItem = document.createElement('li')
+    novoItem.classList.add('item')
 
     const numero = document.createElement('strong')
-    numero.innerHTML = quantidade
-    item.appendChild(numero)
+    numero.innerHTML = item.quantidade
+    novoItem.appendChild(numero)
 
-    item.innerHTML += nome
-    lista.appendChild(item)
+    novoItem.innerHTML += item.nome
+    lista.appendChild(novoItem)
 
-    
 }
 
 limparLista.addEventListener('click', evento => {
