@@ -6,13 +6,15 @@ var itens = []
 
 if (itensArmazenados != null) {
     for (let i = 0; i < itensArmazenados.length; i++) {
-        lista.innerHTML += `<li class="item"><strong>${itensArmazenados[i].quantidade}</strong>${itensArmazenados[i].nome}</li>`
+        
         const itemArmazenado = {
             'nome': itensArmazenados[i].nome,
             'quantidade': itensArmazenados[i].quantidade
         }
 
         itens.push(itemArmazenado)
+        criaElemento(itemArmazenado)
+
     }
 }
 
@@ -21,13 +23,17 @@ formulario.addEventListener('submit', evento => {
 
     var nome = evento.target.elements['nome']
     var quantidade = evento.target.elements['quantidade']
+
+    const ultimoItem = itens[itens.length - 1]
+    const ultimoId = ultimoItem ? ultimoItem.id : 0
+    const novoId = ultimoId + 1
     
      const itemAtual = {
         'nome': nome.value,
         'quantidade': quantidade.value,
-        'id': itens.length
+        'id': novoId
     }
-    
+    console.log(itemAtual.id)
     const existe = itens.find(elemento => elemento.nome === nome.value)
     if (existe) {
         
@@ -52,17 +58,30 @@ formulario.addEventListener('submit', evento => {
 
 function criaElemento (item) {
     
-    const novoItem = document.createElement('li')
+    var novoItem = document.createElement('li')
     novoItem.classList.add('item')
 
     const numero = document.createElement('strong')
     numero.innerHTML = item.quantidade
     novoItem.appendChild(numero)
 
-    numero.dataset.quantidade = itens.length
+    numero.dataset.quantidade = item.id
 
     novoItem.innerHTML += item.nome
     lista.appendChild(novoItem)
+
+    const botaoDelete = document.createElement('button')
+    botaoDelete.innerHTML = 'X'
+    botaoDelete.style.cursor = 'pointer'
+
+    botaoDelete.addEventListener('click', function () {
+        this.parentNode.remove()
+        itens.splice(itens.findIndex(elemento => elemento.id === item.id), 1)
+        localStorage.setItem('itensArmazenados', JSON.stringify(itens))
+    })
+
+    novoItem.appendChild(botaoDelete)
+
 
 }
 
@@ -70,7 +89,7 @@ function atualizaElemento (identificacao, item) {
     lista.querySelector(`[data-quantidade="${identificacao}"]`).innerHTML = item.quantidade
 }
 
-limparLista.addEventListener('click', evento => {
+limparLista.addEventListener('click', () => {
     let limiteDeConfirmacao = 3
 
     if (itens.length > limiteDeConfirmacao) {
